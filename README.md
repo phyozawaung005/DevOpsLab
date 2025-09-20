@@ -7,3 +7,6 @@ Hello
 [![LICENSE](https://img.shields.io/github/license/phyozawaung005/DevOpsLab.svg?style=flat-square)](https://github.com/phyozawaung005/DevOpsLab/blob/master/LICENSE)
 
 [![Releases](https://img.shields.io/github/release/phyozawaung005/DevOpsLab/all.svg?style=flat-square)](https://github.com/phyozawaung005/DevOpsLab/releases)
+
+# Software Engineering Methods
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/phyozawaung005/DevOpsLab/main.yml?branch=master)
