@@ -4,4 +4,4 @@ Hello
 
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/phyozawaung005/DevOpsLab/main.yml?branch=master)
 
-Hi
+[![LICENSE](https://img.shields.io/github/license/<github-username>/sem.svg?style=flat-square)](https://github.com/phyozawaung005/sem/blob/master/LICENSE)
