@@ -51,70 +51,45 @@ public class App
 
     /**
      * Gets all employees’ salaries for a given role
-     * @param role The job title to filter on
+     * @param The job title to filter on
      * @return List of employees with that role
      */
-    public ArrayList<Employee> getSalariesByRole(String role)
+    /**
+     * Gets all the current employees and salaries.
+     * @return A list of all employees and salaries, or null if there is an error.
+     */
+    public ArrayList<Employee> getAllSalaries()
     {
-        ArrayList<Employee> employees = new ArrayList<>();
         try
         {
-            // Use PreparedStatement to prevent SQL injection
+            // Create an SQL statement
+            Statement stmt = con.createStatement();
+            // Create string for SQL statement
             String strSelect =
-                    "SELECT employees.emp_no, employees.first_name, employees.last_name, " +
-                            "salaries.salary, titles.title " +
-                            "FROM employees, salaries, titles " +
-                            "WHERE employees.emp_no = salaries.emp_no " +
-                            "AND employees.emp_no = titles.emp_no " +
-                            "AND salaries.to_date = '9999-01-01' " +
-                            "AND titles.to_date = '9999-01-01' " +
-                            "AND titles.title = ? " +
-                            "ORDER BY employees.emp_no ASC";
-
-            PreparedStatement pstmt = con.prepareStatement(strSelect);
-            pstmt.setString(1, role);
-
-            ResultSet rset = pstmt.executeQuery();
-
-            // Loop through results
+                    "SELECT employees.emp_no, employees.first_name, employees.last_name, salaries.salary "
+                            + "FROM employees, salaries "
+                            + "WHERE employees.emp_no = salaries.emp_no AND salaries.to_date = '9999-01-01' "
+                            + "ORDER BY employees.emp_no ASC";
+            // Execute SQL statement
+            ResultSet rset = stmt.executeQuery(strSelect);
+            // Extract employee information
+            ArrayList<Employee> employees = new ArrayList<Employee>();
             while (rset.next())
             {
                 Employee emp = new Employee();
-                emp.emp_no = rset.getInt("emp_no");
-                emp.first_name = rset.getString("first_name");
-                emp.last_name = rset.getString("last_name");
-                emp.salary = rset.getInt("salary");
-                emp.title = rset.getString("title");
+                emp.emp_no = rset.getInt("employees.emp_no");
+                emp.first_name = rset.getString("employees.first_name");
+                emp.last_name = rset.getString("employees.last_name");
+                emp.salary = rset.getInt("salaries.salary");
                 employees.add(emp);
             }
+            return employees;
         }
         catch (Exception e)
         {
             System.out.println(e.getMessage());
-            System.out.println("Failed to get salaries by role");
-        }
-        return employees;
-    }
-
-    /**
-     * Displays a list of employees’ salaries by role
-     */
-    public void displaySalariesByRole(ArrayList<Employee> employees)
-    {
-        if (employees == null || employees.isEmpty())
-        {
-            System.out.println("No employees found for this role.");
-            return;
-        }
-
-        for (Employee emp : employees)
-        {
-            System.out.println(
-                    "ID: " + emp.emp_no + " | " +
-                            "Name: " + emp.first_name + " " + emp.last_name + " | " +
-                            "Title: " + emp.title + " | " +
-                            "Salary: " + emp.salary
-            );
+            System.out.println("Failed to get salary details");
+            return null;
         }
     }
 
@@ -123,13 +98,19 @@ public class App
      */
     public static void main(String[] args)
     {
-        App app = new App();
-        app.connect();
+        // Create new Application
+        App a = new App();
 
-        // Example: Get all Engineers
-        ArrayList<Employee> engineers = app.getSalariesByRole("Engineer");
-        app.displaySalariesByRole(engineers);
+        // Connect to database
+        a.connect();
 
-        app.disconnect();
+        // Extract employee salary information
+        ArrayList<Employee> employees = a.getAllSalaries();
+
+        // Test the size of the returned data - should be 240124
+        System.out.println(employees.size());
+
+        // Disconnect from database
+        a.disconnect();
     }
 }
