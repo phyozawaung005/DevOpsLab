@@ -109,12 +109,33 @@ public class App
         // Loop over all employees in the list
         for (Employee emp : employees)
         {
+            if (emp == null)
+                continue;
             String emp_string =
                     String.format("%-10s %-15s %-20s %-8s",
                             emp.emp_no, emp.first_name, emp.last_name, emp.salary);
             System.out.println(emp_string);
         }
     }
+    public void displayEmployee(Employee emp)
+    {
+        if (emp == null)
+        {
+            System.out.println("No employee data");
+            return;
+        }
+
+        System.out.println(String.format("%-10s %-15s %-20s %-10s",
+                "Emp No", "First Name", "Last Name", "Salary"));
+
+        System.out.println(String.format("%-10d %-15s %-20s %-10.2f",
+                emp.emp_no,
+                emp.first_name,
+                emp.last_name,
+                emp.salary));
+    }
+
+
 
     /**
      * Main method for testing
