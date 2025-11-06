@@ -2,17 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.napier.sem</groupId>
+    <groupId>com.napier.devops</groupId>
     <artifactId>seMethods</artifactId>
     <version>0.1-alpha-2</version>
 
     <properties>
-        <maven.compiler.source>18</maven.compiler.source>
-        <maven.compiler.target>18</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.jupiter.version>5.10.0</junit.jupiter.version>
     </properties>
 
     <dependencies>
@@ -23,11 +23,11 @@
             <version>9.4.0</version>
         </dependency>
 
-        <!-- ✅ JUnit 5 (API + Engine) -->
+        <!-- ✅ JUnit 5 API + Engine -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.10.0</version>
+            <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -40,25 +40,30 @@
 
     <build>
         <plugins>
-            <!-- ✅ Maven Compiler Plugin -->
+            <!-- ✅ Compile Java -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>18</source>
-                    <target>18</target>
+                    <release>17</release>
                 </configuration>
             </plugin>
 
-            <!-- ✅ Maven Surefire Plugin (JUnit 5 test runner) -->
+            <!-- ✅ Run JUnit 5 Tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
+                <configuration>
+                    <useModulePath>false</useModulePath>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
             </plugin>
 
-            <!-- ✅ Maven Assembly Plugin (for building jar-with-dependencies) -->
+            <!-- ✅ Create Jar with dependencies -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -85,5 +90,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
