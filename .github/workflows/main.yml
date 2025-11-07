@@ -1,44 +1,24 @@
-name: CI for Hello World App
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-
-permissions:
-  contents: write
+name: A workflow for my Hello World App
+on: push
 
 jobs:
   build:
-    name: Build, Test, and Deploy
+    name: Hello world action
     runs-on: ubuntu-22.04
-
     steps:
-      # Step 1: Checkout code
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
-
-      # Step 2: Set up Java
       - name: Set up JDK 11
         uses: actions/setup-java@v2
         with:
           java-version: '11'
           distribution: 'adopt'
-
-      # Step 3: Run Unit Tests for AppTest
-      - name: Run AppTest Unit Tests
+      - name: Unit Tests
         run: mvn -Dtest=com.napier.devops.AppTest test
+      - name: Package and Run docker compose
+        run: |
+          mvn package -DskipTests
+          docker compose up --abort-on-container-exit
 
-      # Step 4: Run Unit Tests for DisplayEmployeeTest
-      - name: Run DisplayEmployeeTest Unit Tests
-        run: mvn -Dtest=com.napier.devops.AppDisplayEmployeeTest test
-
-      # Step 5: Package App (skip tests because they already ran)
-      - name: Package App
-        run: mvn package -DskipTests
-
-      # Step 6: Run Docker Compose
-      - name: Package and Run Docker Compose
-        run: docker compose up --abort-on-container-exit
