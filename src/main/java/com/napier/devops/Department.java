@@ -7,7 +7,7 @@ public class Department {
     public Employee manager;
 
     // Constructor
-    public Department(String dept_no, String dept_name, Employee manager) {
+    public Department() {
         this.dept_no = dept_no;
         this.dept_name = dept_name;
         this.manager = manager;
