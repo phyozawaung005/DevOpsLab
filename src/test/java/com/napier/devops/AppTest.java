@@ -24,6 +24,13 @@ public class AppTest
         app.printSalaries(null);
     }
     @Test
+    void printSalariesTestEmpty()
+    {
+        ArrayList<Employee> employess = new ArrayList<Employee>();
+        app.printSalaries(employess);
+    }
+
+    @Test
     void printSalaries()
     {
         ArrayList<Employee> employees = new ArrayList<Employee>();
