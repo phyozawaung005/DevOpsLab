@@ -16,7 +16,7 @@ public class App {
             System.exit(-1);
         }
 
-        int retries = 10;
+        int retries = 20;
         for (int i = 0; i < retries; ++i) {
             System.out.println("Connecting to database...");
             try {
@@ -69,7 +69,7 @@ public class App {
         App a = new App();
 
         if (args.length < 1) {
-            a.connect("localhost:33060", 30000);
+            a.connect("localhost:33060", 10000);
         } else {
             a.connect(args[0], Integer.parseInt(args[1]));
         }
