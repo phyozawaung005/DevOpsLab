@@ -1,29 +1,29 @@
-#services:
-#  app:
-#    build: .
-#    depends_on:
-#      - db
-#
-#  db:
-#    build: db/.
-#    restart: always
-#    environment:
-#      MYSQL_ROOT_PASSWORD: example
-#      MYSQL_DATABASE: employees
-#      MYSQL_ROOT_HOST: '%'
-#    ports:
-#      - "33060:3306"
-
-#lab 7
-version: '3'
 services:
-  # Application Dockerfile is in the current folder
   app:
     build: .
+    depends_on:
+      - db
 
-  # Database service (Dockerfile in db/ folder)
   db:
     build: db/.
     restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: employees
+      MYSQL_ROOT_HOST: '%'
     ports:
       - "33060:3306"
+
+#lab 7
+#version: '3'
+#services:
+#  # Application Dockerfile is in the current folder
+#  app:
+#    build: .
+#
+#  # Database service (Dockerfile in db/ folder)
+#  db:
+#    build: db/.
+#    restart: always
+#    ports:
+#      - "33060:3306"
