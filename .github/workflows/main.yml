@@ -1,30 +1,9 @@
-#name: A workflow for my Hello World App
-#on: push
-#
-#jobs:
-#  build:
-#    name: Hello world action
-#    runs-on: ubuntu-24.04
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#        with:
-#          submodules: recursive
-#      - name: Set up JDK 18
-#        uses: actions/setup-java@v2
-#        with:
-#          java-version: '18'
-#          distribution: 'adopt'
-#      - name: Unit Tests
-#        run: mvn -Dtest=com.napier.devops.AppTest test
-#      - name: Package and Run docker compose
-#        run: |
-#          mvn package -DskipTests
-#          docker compose up --abort-on-container-exit
-#
 name: A workflow for my Hello World App
-
-on: push
+on:
+  push:
+    branches:
+      - master
+      - lab08
 
 jobs:
   UnitTests:
@@ -45,10 +24,9 @@ jobs:
       - name: Run Unit Tests
         run: mvn -Dtest=com.napier.devops.AppTest test
 
-  BuildAndIntegration:
-    name: Build and Start Using Docker Compose
+  IntegrationTests:
+    name: Integration Tests
     runs-on: ubuntu-24.04
-    needs: UnitTests
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -61,8 +39,39 @@ jobs:
           java-version: '18'
           distribution: 'adopt'
 
-      - name: Package Application
-        run: mvn package -DskipTests
+      - name: Run Integration Tests and Generate Coverage
+        run: |
+          docker build -t database ./db
+          docker run --name employees -dp 33060:3306 database
+          mvn -Dtest=com.napier.devops.AppIntegrationTest test
+          docker stop employees
+          docker rm employees
+          docker image rm database
 
-      - name: Build and Run using Docker Compose
-        run: docker compose up --abort-on-container-exit
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          # token: ${{ secrets.CODECOV_TOKEN }}   # only for private repos
+          directory: ./target/site/jacoco
+          flags: IntegrationTests
+          verbose: true
+
+  BuildCompose:
+    name: Build and Run using Docker Compose
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up JDK 18
+        uses: actions/setup-java@v2
+        with:
+          java-version: '18'
+          distribution: 'adopt'
+
+      - name: Build and Run Docker Compose
+        run: |
+          mvn package -DskipTests
+          docker compose up --abort-on-container-exit
