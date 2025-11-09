@@ -65,7 +65,7 @@ jobs:
       - name: CodeCov
         uses: codecov/codecov-action@v5
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: 0de44233-36d4-47d7-bf5b-9a8ace64fa99
           directory: ./target/site/jacoco
           flags: IntegrationTests
           verbose: true

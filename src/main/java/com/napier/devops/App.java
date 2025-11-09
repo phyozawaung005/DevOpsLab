@@ -21,18 +21,23 @@ public class App {
             System.out.println("Connecting to database...");
             try {
                 Thread.sleep(delay);
-                con = DriverManager.getConnection(
-                        "jdbc:mysql://" + location + "/employees?allowPublicKeyRetrieval=true&useSSL=false",
-                        "root", "example");
+                String url = "jdbc:mysql://" + location + "/employees?allowPublicKeyRetrieval=true&useSSL=false";
+                con = DriverManager.getConnection(url, "root", "example");
                 System.out.println("Successfully connected");
                 break;
             } catch (SQLException sqle) {
                 System.out.println("Failed to connect attempt " + i + ": " + sqle.getMessage());
             } catch (InterruptedException ie) {
-                System.out.println("Thread interrupted? Should not happen.");
+                System.out.println("Thread interrupted");
             }
         }
+
+        if (con == null) {
+            System.out.println("ERROR: Could not establish database connection after retries.");
+            System.exit(-1);
+        }
     }
+
 
     // Disconnect
     public void disconnect() {
