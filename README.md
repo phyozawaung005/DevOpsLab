@@ -15,3 +15,4 @@ Hello
 * License [![LICENSE](https://img.shields.io/github/license/phyozawaung005/DevOpsLab.svg?style=flat-square)](https://github.com/phyozawaung005/DevOpsLab/blob/master/LICENSE)
 * Release [![Releases](https://img.shields.io/github/release/phyozawaung005/DevOpsLab/all.svg?style=flat-square)](https://github.com/phyozawaung005/DevOpsLab/releases)
 
+[![codecov](https://codecov.io/github/phyozawaung005/DevOpsLab/graph/badge.svg?token=14BB4L0MSQ)](https://codecov.io/github/phyozawaung005/DevOpsLab)
