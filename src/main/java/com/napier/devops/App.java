@@ -153,10 +153,11 @@ public class App {
     public static void main(String[] args) {
         App a = new App();
         if (args.length < 1) {
-            a.connect("localhost:33060", 10000);
+            a.connect("db:3306", 10000);   // inside Docker
         } else {
-            a.connect(args[0], Integer.parseInt(args[1]));
+            a.connect(args[0], Integer.parseInt(args[1])); // custom/local
         }
+
 
         Department dept = a.getDepartment("Development");
         ArrayList<Employee> employees = a.getSalariesByDepartment(dept);
