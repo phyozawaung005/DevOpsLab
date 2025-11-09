@@ -48,10 +48,10 @@ jobs:
           docker rm employees
           docker image rm database
 
-      - name: Upload Coverage to Codecov
+      - name: CodeCov
         uses: codecov/codecov-action@v5
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          #token: ${{ secrets.CODECOV_TOKEN }}
           directory: ./target/site/jacoco
           flags: IntegrationTests
           verbose: true
