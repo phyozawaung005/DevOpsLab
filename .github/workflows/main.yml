@@ -48,6 +48,20 @@ jobs:
           docker rm employees
           docker image rm database
 
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npx jest --coverage
+
       - name: CodeCov
         uses: codecov/codecov-action@v5
         with:
