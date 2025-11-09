@@ -83,6 +83,9 @@ on:
     branches:
       - master
       - lab08
+permissions:
+  contents: write
+
 
 jobs:
   UnitTests:
