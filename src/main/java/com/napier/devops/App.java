@@ -7,9 +7,9 @@ public class App {
 
     private Connection con = null;
 
-    // Connect to MySQL database
     public void connect(String location, int delay) {
         try {
+            // Load Database driver
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             System.out.println("Could not load SQL driver");
@@ -20,26 +20,26 @@ public class App {
         for (int i = 0; i < retries; ++i) {
             System.out.println("Connecting to database...");
             try {
+                // Wait for db to start
                 Thread.sleep(delay);
-                String url = "jdbc:mysql://" + location + "/employees?allowPublicKeyRetrieval=true&useSSL=false";
-                con = DriverManager.getConnection(url, "root", "example");
+
+                // Connect to database (new MySQL format)
+                con = DriverManager.getConnection(
+                        "jdbc:mysql://" + location + "/employees?allowPublicKeyRetrieval=true&useSSL=false",
+                        "root",
+                        "example"
+                );
                 System.out.println("Successfully connected");
                 break;
             } catch (SQLException sqle) {
-                System.out.println("Failed to connect attempt " + i + ": " + sqle.getMessage());
+                System.out.println("Failed to connect to database attempt " + i);
+                System.out.println(sqle.getMessage());
             } catch (InterruptedException ie) {
-                System.out.println("Thread interrupted");
+                System.out.println("Thread interrupted? Should not happen.");
             }
-        }
-
-        if (con == null) {
-            System.out.println("ERROR: Could not establish database connection after retries.");
-            System.exit(-1);
         }
     }
 
-
-    // Disconnect
     public void disconnect() {
         if (con != null) {
             try {
@@ -54,9 +54,12 @@ public class App {
     public Department getDepartment(String name) {
         Department dept = null;
         try {
-            PreparedStatement stmt = con.prepareStatement("SELECT dept_no, dept_name FROM departments WHERE dept_name = ?");
+            PreparedStatement stmt = con.prepareStatement(
+                    "SELECT dept_no, dept_name FROM departments WHERE dept_name = ?"
+            );
             stmt.setString(1, name);
             ResultSet rs = stmt.executeQuery();
+
             if (rs.next()) {
                 dept = new Department();
                 dept.setDept_no(rs.getString("dept_no"));
@@ -80,9 +83,11 @@ public class App {
                             "JOIN dept_emp de ON e.emp_no = de.emp_no " +
                             "JOIN salaries s ON e.emp_no = s.emp_no " +
                             "JOIN titles t ON e.emp_no = t.emp_no " +
-                            "WHERE de.dept_no = ? AND s.to_date = '9999-01-01' AND t.to_date = '9999-01-01'");
+                            "WHERE de.dept_no = ? AND s.to_date = '9999-01-01' AND t.to_date = '9999-01-01'"
+            );
             stmt.setString(1, dept.getDept_no());
             ResultSet rs = stmt.executeQuery();
+
             while (rs.next()) {
                 Employee emp = new Employee();
                 emp.emp_no = rs.getInt("emp_no");
@@ -95,6 +100,7 @@ public class App {
         } catch (SQLException e) {
             System.out.println("Error getting employees: " + e.getMessage());
         }
+
         return employees;
     }
 
@@ -103,7 +109,8 @@ public class App {
         try {
             PreparedStatement stmt = con.prepareStatement(
                     "INSERT INTO employees (emp_no, first_name, last_name, birth_date, gender, hire_date) " +
-                            "VALUES (?, ?, ?, '9999-01-01', 'M', '9999-01-01')");
+                            "VALUES (?, ?, ?, '9999-01-01', 'M', '9999-01-01')"
+            );
             stmt.setInt(1, emp.emp_no);
             stmt.setString(2, emp.first_name);
             stmt.setString(3, emp.last_name);
@@ -118,9 +125,11 @@ public class App {
         Employee emp = null;
         try {
             PreparedStatement stmt = con.prepareStatement(
-                    "SELECT emp_no, first_name, last_name FROM employees WHERE emp_no = ?");
+                    "SELECT emp_no, first_name, last_name FROM employees WHERE emp_no = ?"
+            );
             stmt.setInt(1, emp_no);
             ResultSet rs = stmt.executeQuery();
+
             if (rs.next()) {
                 emp = new Employee();
                 emp.emp_no = rs.getInt("emp_no");
