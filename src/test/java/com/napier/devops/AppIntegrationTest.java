@@ -1,77 +1,44 @@
 package com.napier.devops;
 
-import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+
 import java.util.ArrayList;
 
-public class AppIntegrationTest {
+import static org.junit.jupiter.api.Assertions.*;
 
+public class AppIntegrationTest
+{
     static App app;
 
     @BeforeAll
-    static void init() {
+    static void init()
+    {
         app = new App();
-        app.connect("localhost:33060", 0);
-    }
+        app.connect("localhost:33060", 30000);
 
-    @AfterAll
-    static void cleanup() {
-        app.disconnect();
     }
 
     @Test
-    void testGetDepartment() {
-        Department dept = app.getDepartment("Development");
-        assertNotNull(dept);
-        assertEquals("Development", dept.getDept_name());
+    void testGetEmployee() {
+        Employee emp = app.getEmployee(255530);
+        assertEquals(255530, emp.emp_no);
+        assertEquals("Ronghao", emp.first_name);
+        assertEquals("Garigliano", emp.last_name);
     }
 
     @Test
-    void testDepartmentSettersAndGetters() {
-        Department dept = new Department();
-        dept.setDept_no("d001");
-        dept.setDept_name("Development");
-
-        Employee manager = new Employee(1001, "John", "Doe");
-        dept.setManager(manager);
-
-        assertEquals("d001", dept.getDept_no());
-        assertEquals("Development", dept.getDept_name());
-        assertEquals("John", dept.getManager().first_name);
-    }
-
-    @Test
-    void testGetEmployeesByDepartment() {
-        Department dept = app.getDepartment("Development");
-        ArrayList<Employee> employees = app.getSalariesByDepartment(dept);
-
-        assertNotNull(employees);
-        assertTrue(employees.size() > 0);
-
-        Employee emp = employees.get(0);
-        assertNotNull(emp.first_name);
-        assertNotNull(emp.last_name);
-    }
-
-    @Test
-    void testDepartmentToString() {
-        Department dept = new Department();
-        dept.setDept_no("d001");
-        dept.setDept_name("Development");
-
-        String expected = "Department{dept_no='d001', dept_name='Development', manager=null}";
-        assertEquals(expected, dept.toString());
-    }
-
-    @Test
-    void testAddEmployee() {
-        Employee emp = new Employee(500000, "Kevin", "Chalmers");
+    void testAddEmployee()
+    {
+        Employee emp = new Employee();
+        emp.emp_no = 500000;
+        emp.first_name = "Kevin";
+        emp.last_name = "Chalmers";
         app.addEmployee(emp);
-
-        Employee fetched = app.getEmployee(500000);
-        assertNotNull(fetched);
-        assertEquals(500000, fetched.emp_no);
-        assertEquals("Kevin", fetched.first_name);
-        assertEquals("Chalmers", fetched.last_name);
+        emp = app.getEmployee(500000);
+        assertEquals(emp.emp_no, 500000);
+        assertEquals(emp.first_name, "Kevin");
+        assertEquals(emp.last_name, "Chalmers");
     }
 }

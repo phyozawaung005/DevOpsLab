@@ -1,28 +1,44 @@
 package com.napier.devops;
 
-public class Employee {
+/**
+ * Represents an employee
+ */
+public class Employee
+{
+
+    /**
+     * Employee number
+     */
     public int emp_no;
+
+    /**
+     * Employee's first name
+     */
     public String first_name;
+
+    /**
+     * Employee's last name
+     */
     public String last_name;
+
+    /**
+     * Employee's job title
+     */
     public String title;
-    public double salary;
 
-    public Employee() {}
+    /**
+     * Employee's salary
+     */
+    public int salary;
 
-    public Employee(int emp_no, String first_name, String last_name) {
-        this.emp_no = emp_no;
-        this.first_name = first_name;
-        this.last_name = last_name;
-    }
+    /**
+     * Employee's current department
+     */
+    public String dept_name;
 
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "emp_no=" + emp_no +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", title='" + title + '\'' +
-                ", salary=" + salary +
-                '}';
-    }
+    /**
+     * Employee's manager
+     */
+    public String manager;
+
 }
