@@ -301,18 +301,30 @@ public class App {
         // Create new Application
         App a = new App();
 
+        // Connect to database
         if(args.length < 1){
-            a.connect("localhost:33060", 30000);
+            a.connect("localhost:33060", 0);
         }else{
+//            m.connect("db:3306", 10000);
             a.connect(args[0], Integer.parseInt(args[1]));
         }
 
-        Department dept = a.getDepartment("Development");
-        ArrayList<Employee> employees = a.getSalariesByDepartment(dept);
+//        Employee emp = m.getEmployee(255530);
+        // Display results
+//        m.displayEmployee(emp);
 
+//        ArrayList<Employee> employees = m.getAllSalaries();
 
-        // Print salary report
-        a.printSalaries(employees);
+//        Department dept = m.getDepartment("Development");
+        // Extract employee salary information
+//        ArrayList<Employee> employees = m.getSalariesByDepartment(dept);
+
+        ArrayList<Employee> employees = a.getSalariesByRole("Manager");
+        a.outputEmployees(employees, "ManagerSalaries.md");
+
+        // Test the size of the returned data - should be 240124
+//        System.out.println(employees.size());
+//        m.printSalaries(employees);
 
         // Disconnect from database
         a.disconnect();
