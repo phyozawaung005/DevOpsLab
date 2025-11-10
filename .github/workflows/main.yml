@@ -114,7 +114,7 @@ jobs:
       - name: Integration Tests
         run: |
           docker compose up -d db
-          mvn -Dtest=com.globalworldpopulation.MySQL_Test_Integration_Test test
+          mvn -Dtest=com.napier.devops.AppIntegrationTest test
       - name: Shutdown
         run: docker compose down
       - name: CodeCov
